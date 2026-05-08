@@ -168,7 +168,7 @@ A self-contained 4-step wizard that drives the full report workflow.
 ## Project Structure
 
 ```
-C:/Za/PDF-Report-Engine/
+pdf-report-engine/
 ├── api/
 │   └── routes/
 │       ├── activate.ts       — POST /api/pdf-report/activate (subscription cookie)
@@ -240,8 +240,15 @@ npm run lint
 
 ---
 
+## Recent Additions
+
+- **v0.1.1** — Logo size increased 50%, added hover glow effect for better visual hierarchy
+- **v0.1.0** — Initial release with Python engine, Next.js API routes, React 4-step wizard, comprehensive documentation
+
+---
+
 ## License
 
-MIT — Copyright 2026 Frxncois (DevCraftXCoder)
+MIT — Copyright 2026 DevCraftXCoder
 
 See [LICENSE](./LICENSE) for the full text.
