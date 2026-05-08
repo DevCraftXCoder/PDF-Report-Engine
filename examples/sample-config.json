@@ -1,0 +1,222 @@
+{
+  "_comment": "PDF Report Engine — sample config. Fields marked REQUIRED must be present. All others are optional.",
+  "_schema_version": "0.1.0",
+
+  "company_name": "NovaMind AI",
+  "industry": "AI & Machine Learning",
+  "tagline": "Autonomous decision intelligence for enterprise teams",
+  "bio": "NovaMind AI was founded in 2023 to bring production-grade autonomous agents to mid-market enterprises. We combine large language model orchestration with deterministic rule engines to deliver explainable decisions at scale. Headquartered in New York, with 28 employees and 3 design partners generating $180k ARR.",
+  "executive_summary": "NovaMind AI has achieved product-market fit in the legal workflow automation vertical, with 3 paying enterprise customers and a pipeline of $2.1M ARR. The core differentiation is our hybrid explainable AI layer — customers can audit every decision the system makes. This report covers competitive positioning, revenue trajectory, technical audit, and strategic roadmap for Q3–Q4 2026.",
+
+  "report_type": "AI Startup Audit",
+
+  "metrics": {
+    "mrr": 15000,
+    "target_mrr": 50000,
+    "users": 312,
+    "growth_rate": 22.5,
+    "churn_rate": 2.1,
+    "ltv": 48000,
+    "cac": 6200,
+    "nps": 67,
+    "uptime": 99.94
+  },
+
+  "kpis": [
+    {
+      "label": "MRR",
+      "value": "$15,000",
+      "maturity": "Developing",
+      "trend": "+22% MoM"
+    },
+    {
+      "label": "NPS",
+      "value": "67",
+      "maturity": "Advanced",
+      "trend": "Stable"
+    },
+    {
+      "label": "Churn Rate",
+      "value": "2.1%",
+      "maturity": "Optimized",
+      "trend": "Improving"
+    },
+    {
+      "label": "CAC",
+      "value": "$6,200",
+      "maturity": "Developing",
+      "trend": "Needs reduction"
+    },
+    {
+      "label": "LTV:CAC Ratio",
+      "value": "7.7x",
+      "maturity": "Advanced",
+      "trend": "Healthy"
+    },
+    {
+      "label": "API Uptime",
+      "value": "99.94%",
+      "maturity": "Optimized",
+      "trend": "SLA met"
+    }
+  ],
+
+  "revenue_projections": {
+    "current_arr": 180000,
+    "q3_2026_target": 420000,
+    "q4_2026_target": 720000,
+    "2027_target": 2500000,
+    "growth_model": "land-and-expand",
+    "key_assumptions": [
+      "3 new enterprise logos per quarter at $80k ACV",
+      "Existing customers expand by 30% in year 2",
+      "Self-serve tier launches Q3 at $299/month"
+    ]
+  },
+
+  "risk_items": [
+    {
+      "category": "Competitive",
+      "risk": "Hyperscalers (OpenAI, Google) enter the legal AI automation space with bundled offerings",
+      "severity": "High",
+      "likelihood": "Likely",
+      "mitigation": "Deepen vertical integration and proprietary data moats; compete on explainability and compliance features hyperscalers cannot offer"
+    },
+    {
+      "category": "Technical",
+      "risk": "LLM hallucination in high-stakes legal workflows",
+      "severity": "Critical",
+      "likelihood": "Possible",
+      "mitigation": "Deterministic rule overlay on all LLM outputs; mandatory human review gate for category-A decisions"
+    },
+    {
+      "category": "Financial",
+      "risk": "Runway below 12 months if Q3 ARR target missed",
+      "severity": "High",
+      "likelihood": "Possible",
+      "mitigation": "Maintain rolling 13-week cash forecast; activate bridge raise at 8-month runway trigger"
+    },
+    {
+      "category": "Regulatory",
+      "risk": "EU AI Act compliance requirements for high-risk AI systems",
+      "severity": "Medium",
+      "likelihood": "Certain",
+      "mitigation": "Engage external counsel for AI Act readiness assessment Q2 2026; build audit log export into core product"
+    }
+  ],
+
+  "roadmap_items": [
+    {
+      "phase": "Q2 2026",
+      "milestone": "Launch self-serve tier with usage-based billing",
+      "owner": "Product",
+      "status": "In Progress"
+    },
+    {
+      "phase": "Q3 2026",
+      "milestone": "SOC 2 Type II certification",
+      "owner": "Engineering",
+      "status": "Planned"
+    },
+    {
+      "phase": "Q3 2026",
+      "milestone": "Third enterprise logo (target: $120k ACV)",
+      "owner": "Sales",
+      "status": "Pipeline"
+    },
+    {
+      "phase": "Q4 2026",
+      "milestone": "API v2 with streaming decision responses",
+      "owner": "Engineering",
+      "status": "Design"
+    },
+    {
+      "phase": "Q1 2027",
+      "milestone": "Series A raise ($5–8M)",
+      "owner": "CEO",
+      "status": "Planned"
+    }
+  ],
+
+  "competitive_data": [
+    {
+      "competitor": "Harvey AI",
+      "strength": "Strong brand recognition in BigLaw; deep Thomson Reuters partnership",
+      "weakness": "Enterprise-only pricing locks out mid-market; no explainability layer",
+      "positioning": "High-end BigLaw automation"
+    },
+    {
+      "competitor": "Ironclad",
+      "strength": "Mature contract lifecycle management platform; large install base",
+      "weakness": "Limited generative AI; focused on CLM not decision automation",
+      "positioning": "Contract management incumbent"
+    },
+    {
+      "competitor": "Anthropic Enterprise",
+      "strength": "Claude API with constitutional AI safety; brand trust",
+      "weakness": "Horizontal platform — no legal-specific fine-tuning or compliance features",
+      "positioning": "Foundational model provider"
+    }
+  ],
+
+  "tech_stack": [
+    {
+      "layer": "Inference",
+      "tech": "Claude claude-opus-4-7 + GPT-4o ensemble",
+      "hosting": "Anthropic API + Azure OpenAI",
+      "status": "Production"
+    },
+    {
+      "layer": "Orchestration",
+      "tech": "LangGraph + custom rule engine",
+      "hosting": "AWS ECS (Fargate)",
+      "status": "Production"
+    },
+    {
+      "layer": "Database",
+      "tech": "PostgreSQL 16 + pgvector",
+      "hosting": "AWS RDS",
+      "status": "Production"
+    },
+    {
+      "layer": "API",
+      "tech": "FastAPI 0.110 + Pydantic v2",
+      "hosting": "AWS ECS",
+      "status": "Production"
+    },
+    {
+      "layer": "Frontend",
+      "tech": "Next.js 14 + Shadcn UI",
+      "hosting": "Vercel",
+      "status": "Production"
+    },
+    {
+      "layer": "Auth",
+      "tech": "Auth0 with MFA enforcement",
+      "hosting": "Auth0 (SaaS)",
+      "status": "Production"
+    },
+    {
+      "layer": "Observability",
+      "tech": "Datadog APM + OpenTelemetry",
+      "hosting": "Datadog SaaS",
+      "status": "Production"
+    }
+  ],
+
+  "ai_narratives": {
+    "executive_overview": "NovaMind AI occupies a defensible position at the intersection of enterprise compliance requirements and the operational efficiency unlocked by large language models. The company's explainability-first architecture is not a product differentiator — it is a prerequisite for adoption in regulated industries. This positions NovaMind ahead of horizontal LLM providers who cannot offer the audit trails and decision provenance that legal, financial, and healthcare teams require.",
+    "growth_analysis": "The current growth rate of 22% MoM is healthy but must be assessed against customer concentration risk: three customers represent 100% of ARR. The Q3 self-serve launch is the critical inflection point — success here diversifies revenue and provides a low-cost acquisition channel to supplement the current high-touch enterprise sales motion. CAC reduction to below $4,000 is achievable if the self-serve funnel converts at or above 3%.",
+    "risk_summary": "The two risks requiring immediate board attention are LLM hallucination in high-stakes workflows and runway exposure. Both are manageable with existing resources. The deterministic rule overlay is technically sound; the gap is documentation and external audit coverage needed for enterprise procurement. The runway risk is a planning problem, not a business model problem — the unit economics at scale are compelling."
+  },
+
+  "logo_base64": "",
+
+  "audience_data": {
+    "primary_persona": "General Counsel at 200–2000 employee enterprises",
+    "secondary_persona": "VP Engineering at legal-tech-adjacent SaaS companies",
+    "geographic_focus": "North America (US primary), EU expansion 2027",
+    "deal_cycle": "60–90 days",
+    "avg_stakeholders_per_deal": 4
+  }
+}
