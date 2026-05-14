@@ -37,10 +37,10 @@ _runs/               — temp directory, auto-cleaned after generation
 
 ### Node.js
 
-Install the package from npm:
+Install the package:
 
 ```
-npm install pdf-report-engine
+pnpm add pdf-report-engine
 ```
 
 Add the component to your Next.js app (App Router):
@@ -203,8 +203,6 @@ pdf-report-engine/
 **Clone:**
 
 ```
-git clone https://github.com/DevCraftXCoder/PDF-Report-Engine.git
-cd PDF-Report-Engine
 ```
 
 **Install Python dependencies:**
@@ -216,7 +214,7 @@ pip install -e ".[dev]"
 **Install Node.js dependencies:**
 
 ```
-npm install
+pnpm install
 ```
 
 **Run Python tests:**
@@ -228,14 +226,14 @@ python -m pytest tests/ -v
 **Run TypeScript check:**
 
 ```
-npm run typecheck
+pnpm typecheck
 ```
 
 **Run lint:**
 
 ```
 python -m ruff check python/
-npm run lint
+pnpm lint
 ```
 
 ---
