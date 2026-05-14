@@ -78,6 +78,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "user_id is required" }, { status: 400 });
   }
 
+  // Audit log — all activation attempts are logged so admin-delegated activations
+  // are traceable. Never log the full cookie value — just identity signals.
+  console.log(JSON.stringify({
+    event: "pdf_report_activation_attempt",
+    is_admin: isAdmin,
+    is_mizzy: isMizzy,
+    target_user_id: userId,
+    timestamp: new Date().toISOString(),
+  }));
+
+  // TODO [P1-2]: Add rate limiting here (3 attempts/hr per IP) before this
+  // route ships in production. Use the checkRateLimit helper from your
+  // rate-limiter lib with key "pdf-report-activate".
+
   // Verify the subscription is active before issuing the cookie
   const active = await hasActiveReportEngineSubscription(userId);
   if (!active) {
@@ -87,14 +101,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Set the report_engine_uid cookie (HttpOnly, Secure, SameSite=Strict)
+  // TODO [P2-1]: Sign userId with HMAC-SHA-256 (same key as verifyToken) before
+  // storing in cookie. Use deriveToken(userId, "report_engine_uid") from auth-token.ts.
+  // Currently safe because every route calls hasActiveReportEngineSubscription,
+  // but any future skip of that check creates an instant auth bypass.
+
+  // Set the report_engine_uid cookie.
+  // Path is restricted to /api/pdf-report to limit cookie transmission scope.
   const res = NextResponse.json({ ok: true });
   res.cookies.set("report_engine_uid", userId, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
     maxAge: COOKIE_MAX_AGE,
-    path: "/",
+    // Restrict transmission to pdf-report routes only — reduces blast radius of
+    // any XSS or server-side session confusion on unrelated domain routes.
+    path: "/api/pdf-report",
   });
 
   return res;

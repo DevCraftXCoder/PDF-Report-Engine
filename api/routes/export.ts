@@ -60,8 +60,11 @@ import { writeFile, readFile, unlink, mkdir } from "fs/promises";
 
 export const runtime = "nodejs";
 
-const PYTHON_BIN = process.env.PYTHON_BIN ?? "python";
-const RUNS_DIR = path.join(process.cwd(), "..", "resume", "_runs");
+if (!process.env.PYTHON_BIN) {
+  throw new Error("PYTHON_BIN environment variable is not set — cannot start PDF export service");
+}
+const PYTHON_BIN: string = process.env.PYTHON_BIN;
+const RUNS_DIR = process.env.PDF_RUNS_DIR ?? path.join(process.cwd(), "pdf-runs");
 
 // ---------------------------------------------------------------------------
 // Supported export formats

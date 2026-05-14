@@ -71,8 +71,17 @@ export const runtime = "nodejs";
 // Constants
 // ---------------------------------------------------------------------------
 
-const PDF_ENGINE_PATH = path.join(process.cwd(), "..", "resume", "pdf_engine.py");
-const PYTHON_BIN = process.env.PYTHON_BIN ?? "python";
+// Fail fast at module load if PYTHON_BIN is not set — prevents silent failure at request time
+if (!process.env.PYTHON_BIN) {
+  throw new Error("PYTHON_BIN environment variable is not set — cannot start PDF generation service");
+}
+const PYTHON_BIN: string = process.env.PYTHON_BIN;
+
+// PDF_ENGINE_PATH: prefer explicit env var (absolute, deployment-portable);
+// fall back to a path relative to the package root for local dev.
+const PDF_ENGINE_PATH =
+  process.env.PDF_ENGINE_PATH ??
+  path.join(__dirname, "../../python/reportlab_engine/pdf_engine.py");
 const MAX_COMPANY_NAME = 200;
 const MAX_NARRATIVE_LEN = 4_000;
 const MAX_TAGLINE_LEN = 200;
@@ -326,7 +335,7 @@ export async function POST(req: NextRequest) {
   const safeName = (reportConfig.company_name as string)
     .replace(/[^a-zA-Z0-9_-]/g, "_")
     .slice(0, 40);
-  const outputDir = path.join(process.cwd(), "..", "resume", "_runs");
+  const outputDir = process.env.PDF_RUNS_DIR ?? path.join(process.cwd(), "pdf-runs");
   const outputPath = path.join(outputDir, `${safeName}_${timestamp}.pdf`);
 
   // Ensure output directory exists

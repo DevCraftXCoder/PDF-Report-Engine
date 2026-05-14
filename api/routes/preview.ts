@@ -51,8 +51,16 @@ import { readFile, unlink, mkdir } from "fs/promises";
 
 export const runtime = "nodejs";
 
-const PDF_ENGINE_PATH = path.join(process.cwd(), "..", "resume", "pdf_engine.py");
-const PYTHON_BIN = process.env.PYTHON_BIN ?? "python";
+// Fail fast at module load if PYTHON_BIN is not set
+if (!process.env.PYTHON_BIN) {
+  throw new Error("PYTHON_BIN environment variable is not set — cannot start PDF preview service");
+}
+const PYTHON_BIN: string = process.env.PYTHON_BIN;
+
+// PDF_ENGINE_PATH: prefer explicit env var; fall back to package-relative path for local dev
+const PDF_ENGINE_PATH =
+  process.env.PDF_ENGINE_PATH ??
+  path.join(__dirname, "../../python/reportlab_engine/pdf_engine.py");
 const PREVIEW_DPI = 120;
 
 // ---------------------------------------------------------------------------
@@ -131,7 +139,7 @@ export async function POST(req: NextRequest) {
 
   // Temp paths
   const timestamp = Date.now();
-  const runsDir = path.join(process.cwd(), "..", "resume", "_runs");
+  const runsDir = process.env.PDF_RUNS_DIR ?? path.join(process.cwd(), "pdf-runs");
   try {
     await mkdir(runsDir, { recursive: true });
   } catch {
