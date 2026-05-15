@@ -128,6 +128,20 @@ const INITIAL_FORM: ReportFormData = {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
+const ANALYSIS_CONFIDENCE: Record<AnalysisType, string> = {
+  competitive: "94% match",
+  growth:      "91% match",
+  risk:        "88% match",
+  market:      "96% match",
+  technical:   "85% match",
+  financial:   "90% match",
+};
+
+const AI_CHIPS = [
+  "Revenue Growth", "Market Positioning", "Competitive Moat",
+  "Churn Vectors", "TAM Expansion", "Unit Economics",
+];
+
 function StepProgress({
   current,
   onGoto,
@@ -138,14 +152,19 @@ function StepProgress({
   completedUpTo: number;
 }): React.JSX.Element {
   const pct = Math.round(((current + 1) / STEP_LABELS.length) * 100);
+  const timeRemaining = current === 0 ? "~3 min remaining" : current === 1 ? "~2 min remaining" : current === 2 ? "~1 min remaining" : "Ready to export";
   return (
     <div className={styles.stepList}>
       {/* Progress bar */}
-      <div className={styles.sidebarProgressWrap}>
-        <div className={styles.sidebarProgressBar}>
+      <div className={styles.sidebarProgress}>
+        <div className={styles.sidebarProgressMeta}>
+          <span className={styles.sidebarProgressStep}>Step {current + 1} of {STEP_LABELS.length}</span>
+          <span className={styles.sidebarProgressPct}>{pct}%</span>
+        </div>
+        <div className={styles.sidebarProgressTrack}>
           <div className={styles.sidebarProgressFill} style={{ width: `${pct}%` }} />
         </div>
-        <span className={styles.sidebarProgressPct}>{pct}%</span>
+        <span className={styles.sidebarProgressTime}>{timeRemaining}</span>
       </div>
 
       {STEP_LABELS.map((label, i) => {
@@ -157,8 +176,8 @@ function StepProgress({
             key={i}
             className={[
               styles.stepItem,
-              isActive ? styles.stepItemActive : "",
-              isDone ? styles.stepItemDone : "",
+              isActive ? styles.active : "",
+              isDone ? styles.completed : "",
             ].join(" ")}
             onClick={() => isReachable && onGoto(i)}
             role="button"
@@ -168,15 +187,20 @@ function StepProgress({
             style={{ cursor: isReachable ? "pointer" : "default" }}
           >
             <div className={[
-              styles.stepDot,
-              isActive ? styles.stepDotActive : "",
-              isDone ? styles.stepDotDone : "",
+              styles.stepNumber,
+              isActive ? styles.active : "",
+              isDone ? styles.completed : "",
             ].join(" ")}>
               {isDone ? "✓" : i + 1}
             </div>
-            <span className={[styles.stepLabel, isActive ? styles.stepLabelActive : ""].join(" ")}>
+            <span className={styles.stepName}>
               {label}
             </span>
+            {isDone && (
+              <svg className={styles.stepCheck} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            )}
           </div>
         );
       })}
@@ -293,10 +317,14 @@ function PDFPreviewPanel({
   formData,
   template,
   onExport,
+  isAnalyzing = false,
+  previewUrl,
 }: {
   formData: ReportFormData;
   template: ReportTemplate;
   onExport: (format: "pdf" | "docx" | "ppt") => void;
+  isAnalyzing?: boolean;
+  previewUrl?: string | null;
 }): React.JSX.Element {
   const templateLabel = TEMPLATES.find((t) => t.id === template)?.label ?? "Report";
   const hasName = formData.companyName.trim().length > 0;
@@ -314,7 +342,58 @@ function PDFPreviewPanel({
         <button className={styles.previewZoom} aria-label="Toggle zoom">100%</button>
       </div>
 
-      <div className={styles.previewScroll}>
+      {/* Shimmer overlay while analyzing */}
+      {isAnalyzing && (
+        <div className={styles.shimmerOverlay} aria-live="polite" aria-label="Analyzing report...">
+          <div className={styles.analyzingText}>
+            <span className={styles.analyzeSpinner} aria-hidden="true" />
+            Analyzing data…
+          </div>
+          <div className={styles.shimmerStack}>
+            <div className={styles.shimmerTitle} />
+            <div className={styles.shimmerBar} style={{ width: "85%" }} />
+            <div className={styles.shimmerLine} style={{ width: "70%" }} />
+            <div className={styles.shimmerLine} style={{ width: "90%" }} />
+          </div>
+          <div className={styles.shimmerGrid}>
+            <div className={styles.shimmerTile} />
+            <div className={styles.shimmerTile} />
+            <div className={styles.shimmerTile} />
+            <div className={styles.shimmerTile} />
+          </div>
+        </div>
+      )}
+
+      {/* Empty state when no preview URL and not analyzing */}
+      {!isAnalyzing && !previewUrl && (
+        <div className={styles.previewEmpty} aria-label="No preview available">
+          <div className={styles.previewEmptyIcon} aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+          </div>
+          <div className={styles.previewEmptyTitle}>No preview yet</div>
+          <div className={styles.previewEmptySub}>
+            Complete the form steps and run AI analysis to generate your report preview.
+          </div>
+        </div>
+      )}
+
+      {/* Live preview iframe when URL is available */}
+      {!isAnalyzing && previewUrl && (
+        <iframe
+          className={styles.previewIframe}
+          src={previewUrl}
+          title="Report preview"
+          aria-label="Live report preview"
+        />
+      )}
+
+      <div className={styles.previewScroll} style={{ display: (!isAnalyzing && !previewUrl) ? "none" : undefined }}>
         {/* Cover Page */}
         <div className={styles.pdfPage}>
           <div className={[styles.pdfPageInner, styles.pdfCoverPage].join(" ")}>
@@ -520,7 +599,20 @@ function Step1({
             value={formData.description}
             onChange={(e) => onChange({ description: e.target.value })}
             rows={4}
+            maxLength={400}
+            aria-describedby="desc-counter"
           />
+          {formData.description.length > 320 && (
+            <span
+              id="desc-counter"
+              className={[
+                styles.charCounter,
+                formData.description.length >= 380 ? styles.charCounterWarn : "",
+              ].filter(Boolean).join(" ")}
+            >
+              {formData.description.length} / 400
+            </span>
+          )}
         </div>
       </div>
 
@@ -787,14 +879,28 @@ function Step3({
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleAnalysis(opt.id); } }}
               >
                 <div className={styles.analysisCardHeader}>
-                  <span className={styles.analysisCardIcon}>{opt.icon}</span>
-                  <span className={styles.analysisCardName}>{opt.name}</span>
+                  <div className={styles.analysisCardLeft}>
+                    <span className={styles.analysisCardIcon}>{opt.icon}</span>
+                    <span className={styles.analysisCardName}>{opt.name}</span>
+                  </div>
+                  <span className={styles.confidenceBadge}>
+                    {ANALYSIS_CONFIDENCE[opt.id]}
+                  </span>
                 </div>
                 <div className={styles.analysisCardDesc}>{opt.desc}</div>
               </div>
             );
           })}
         </div>
+      </div>
+
+      <div className={styles.aiChipsWrap} aria-label="AI recommendation topics">
+        {AI_CHIPS.map((chip) => (
+          <span key={chip} className={styles.aiChip}>
+            <span className={styles.aiChipDot} aria-hidden="true" />
+            {chip}
+          </span>
+        ))}
       </div>
 
       <div className={styles.formCard}>
@@ -1184,6 +1290,8 @@ export default function PanelPDFReportEngine({
           formData={formData}
           template={template}
           onExport={handleExport}
+          isAnalyzing={isAnalyzing}
+          previewUrl={null}
         />
 
       </div>

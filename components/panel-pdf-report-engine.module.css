@@ -1,39 +1,1611 @@
-﻿/* panel-pdf-report-engine.module.css */
+/* PDF Report Engine — Premium SaaS Design System */
+/* Palette: Purple/Pink gradient on near-black. NO --ug-* tokens. */
 
-/* ── CSS Variables ─────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes analyzePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Root / Shell */
 
 .root {
-  --color-dark-bg:       #0a0a0a;
-  --color-panel:         rgba(20, 8, 14, 0.55);
-  --color-panel-raised:  rgba(24, 10, 18, 0.65);
-  --color-accent-red:    #e94560;
-  --color-accent-pink:   #f472b6;
-  --color-accent-amber:  #f59e0b;
-  --color-text-primary:  #e8e8e8;
-  --color-text-secondary:#999;
-  --color-text-muted:    #555;
-  --color-border-subtle: rgba(255,255,255,0.08);
-  --color-border-active: rgba(233,69,96,0.45);
-  --color-glow-red:      rgba(233,69,96,0.18);
-  --color-glow-pink:     rgba(244,114,182,0.15);
+  --pdf-bg: #07070A;
+  --pdf-panel: #0F1117;
+  --pdf-card: #12141C;
+  --pdf-border: rgba(255,255,255,0.07);
+  --pdf-border-hi: rgba(255,255,255,0.12);
+  --pdf-text-1: #FFFFFF;
+  --pdf-text-2: #A1A1AA;
+  --pdf-text-3: #52525B;
+  --pdf-purple: #7C3AED;
+  --pdf-pink: #EC4899;
+  --pdf-gradient: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+  --pdf-glow-p: rgba(124,58,237,0.22);
+  --pdf-glow-pink: rgba(236,72,153,0.14);
+  --pdf-success: #22C55E;
+  --pdf-warn: #F59E0B;
+  --pdf-danger: #EF4444;
+  --pdf-s1: 8px;
+  --pdf-s2: 16px;
+  --pdf-s3: 24px;
+  --pdf-s4: 32px;
+  --pdf-s5: 48px;
 
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 100%;
-  min-height: 0;
-  flex: 1;
+  height: 100%;
+  background: var(--pdf-bg);
+  color: var(--pdf-text-1);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
   overflow: hidden;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  background: #0a0a0a;
-  font-family: "DM Sans", system-ui, sans-serif;
-  color: var(--color-text-primary);
-  position: relative;
-  isolation: isolate;
 }
 
-/* ── Live Background Layer ──────────────────────────────────────────────────── */
+/* Header */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pdf-s2) var(--pdf-s3);
+  border-bottom: 1px solid var(--pdf-border);
+  background: var(--pdf-panel);
+  flex-shrink: 0;
+  gap: var(--pdf-s2);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--pdf-s2);
+}
+
+.headerIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--pdf-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px var(--pdf-glow-p);
+  flex-shrink: 0;
+}
+
+.headerIcon svg {
+  color: #fff;
+  width: 18px;
+  height: 18px;
+}
+
+.headerTitles {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.headerTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pdf-text-1);
+  letter-spacing: -0.01em;
+}
+
+.headerSub {
+  font-size: 12px;
+  color: var(--pdf-text-3);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--pdf-s1);
+}
+
+.headerBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.18) 0%, rgba(236,72,153,0.12) 100%);
+  border: 1px solid rgba(124,58,237,0.3);
+  font-size: 11px;
+  font-weight: 600;
+  color: #C084FC;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Shell Grid */
+
+.shell {
+  display: grid;
+  grid-template-columns: 240px 1fr 380px;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Sidebar */
+
+.sidebar {
+  background: var(--pdf-panel);
+  border-right: 1px solid var(--pdf-border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--pdf-s3) var(--pdf-s2);
+  gap: var(--pdf-s3);
+}
+
+.sidebarSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pdf-s1);
+}
+
+.sidebarLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pdf-text-3);
+  padding: 0 var(--pdf-s1);
+  margin-bottom: 4px;
+}
+
+.sidebarProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--pdf-s2);
+  background: var(--pdf-card);
+  border: 1px solid var(--pdf-border);
+  border-radius: 12px;
+}
+
+.sidebarProgressMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.sidebarProgressStep {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pdf-text-3);
+}
+
+.sidebarProgressPct {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--pdf-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sidebarProgressTime {
+  font-size: 10px;
+  color: var(--pdf-text-3);
+  margin-top: 2px;
+}
+
+.sidebarProgressTrack {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.sidebarProgressFill {
+  height: 100%;
+  background: var(--pdf-gradient);
+  border-radius: 99px;
+  transition: width 600ms ease;
+}
+
+/* Step list */
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stepItem {
+  display: flex;
+  align-items: center;
+  gap: var(--pdf-s1);
+  padding: 8px var(--pdf-s1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+  position: relative;
+}
+
+.stepItem:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.stepItem.active {
+  background: rgba(124,58,237,0.12);
+}
+
+.stepItem.completed {
+  opacity: 0.75;
+}
+
+.stepNumber {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--pdf-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pdf-text-3);
+  flex-shrink: 0;
+  transition: all 150ms ease;
+}
+
+.stepItem.active .stepNumber {
+  background: var(--pdf-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 10px var(--pdf-glow-p);
+}
+
+.stepItem.completed .stepNumber {
+  background: rgba(34,197,94,0.15);
+  border-color: rgba(34,197,94,0.4);
+  color: var(--pdf-success);
+}
+
+.stepName {
+  font-size: 13px;
+  color: var(--pdf-text-2);
+  flex: 1;
+}
+
+.stepItem.active .stepName {
+  color: var(--pdf-text-1);
+  font-weight: 600;
+}
+
+.stepCheck {
+  width: 14px;
+  height: 14px;
+  color: var(--pdf-success);
+  flex-shrink: 0;
+}
+
+/* Template picker */
+
+.templateGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.templateCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--pdf-s1) 6px;
+  border-radius: 10px;
+  border: 1.5px solid var(--pdf-border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 150ms ease;
+  text-align: center;
+}
+
+.templateCard:hover {
+  border-color: var(--pdf-border-hi);
+  background: rgba(255,255,255,0.03);
+}
+
+.templateCard.selected {
+  border-color: var(--pdf-purple);
+  background: rgba(124,58,237,0.1);
+  box-shadow: 0 0 12px var(--pdf-glow-p);
+}
+
+.templateIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+}
+
+.templateCard.selected .templateIcon {
+  background: var(--pdf-gradient);
+}
+
+.templateIcon svg {
+  width: 14px;
+  height: 14px;
+  color: var(--pdf-text-2);
+}
+
+.templateCard.selected .templateIcon svg {
+  color: #fff;
+}
+
+.templateName {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pdf-text-2);
+  line-height: 1.3;
+}
+
+.templateCard.selected .templateName {
+  color: var(--pdf-text-1);
+}
+
+/* Stats panel */
+
+.statsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px var(--pdf-s1);
+  border-radius: 8px;
+  background: var(--pdf-card);
+  border: 1px solid var(--pdf-border);
+}
+
+.statLabel {
+  font-size: 11px;
+  color: var(--pdf-text-3);
+}
+
+.statValue {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pdf-text-1);
+}
+
+.statValue.highlight {
+  background: var(--pdf-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pdf-success);
+  animation: pulse 2s ease-in-out infinite;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+/* Workspace */
+
+.workspace {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--pdf-bg);
+}
+
+.workspaceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pdf-s2) var(--pdf-s3);
+  border-bottom: 1px solid var(--pdf-border);
+  flex-shrink: 0;
+  gap: var(--pdf-s2);
+}
+
+.workspaceTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pdf-text-1);
+}
+
+.progressBarRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+}
+
+.progressTrack {
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 99px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--pdf-gradient);
+  border-radius: 99px;
+  transition: width 600ms ease;
+  box-shadow: 0 0 8px var(--pdf-glow-p);
+}
+
+.progressTimeEstimate {
+  font-size: 10px;
+  color: var(--pdf-text-3);
+  text-align: right;
+}
+
+.workspaceContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--pdf-s3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pdf-s3);
+}
+
+/* Form Card */
+
+.formCard {
+  background: var(--pdf-card);
+  border: 1px solid var(--pdf-border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+  animation: fadeIn 200ms ease both;
+}
+
+.formCard:hover {
+  border-color: var(--pdf-border-hi);
+}
+
+.formCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pdf-s2) var(--pdf-s3);
+  border-bottom: 1px solid var(--pdf-border);
+  background: rgba(255,255,255,0.015);
+}
+
+.formCardTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pdf-text-1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.formCardTitle svg {
+  width: 14px;
+  height: 14px;
+  color: var(--pdf-purple);
+}
+
+.formCardBadge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(124,58,237,0.15);
+  color: #C084FC;
+  border: 1px solid rgba(124,58,237,0.25);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.formCardBody {
+  padding: var(--pdf-s3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pdf-s2);
+}
+
+/* Form Controls */
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pdf-text-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fieldHint {
+  font-size: 11px;
+  color: var(--pdf-text-3);
+  font-weight: 400;
+  margin-left: auto;
+}
+
+.fieldInput,
+.fieldTextarea,
+.fieldSelect {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--pdf-border);
+  border-radius: 9px;
+  color: var(--pdf-text-1);
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.fieldInput:focus,
+.fieldTextarea:focus,
+.fieldSelect:focus {
+  border-color: var(--pdf-purple);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+}
+
+.fieldInput::placeholder,
+.fieldTextarea::placeholder {
+  color: var(--pdf-text-3);
+}
+
+.fieldTextarea {
+  resize: vertical;
+  min-height: 90px;
+  max-height: 220px;
+  line-height: 1.6;
+}
+
+.fieldSelect option {
+  background: #1a1a2e;
+  color: var(--pdf-text-1);
+}
+
+.charCounter {
+  font-size: 11px;
+  color: var(--pdf-text-3);
+  text-align: right;
+  transition: color 150ms ease;
+}
+
+.charCounterWarn {
+  color: var(--pdf-warn);
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--pdf-s2);
+}
+
+/* Toggle */
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--pdf-border);
+}
+
+.toggleRow:last-child {
+  border-bottom: none;
+}
+
+.toggleInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggleLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--pdf-text-1);
+}
+
+.toggleDesc {
+  font-size: 11px;
+  color: var(--pdf-text-3);
+}
+
+.toggleSwitch {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggleTrack {
+  position: absolute;
+  inset: 0;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--pdf-border);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.toggleSwitch input:checked + .toggleTrack {
+  background: var(--pdf-gradient);
+  border-color: transparent;
+  box-shadow: 0 0 8px var(--pdf-glow-p);
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 200ms ease;
+  pointer-events: none;
+}
+
+.toggleSwitch input:checked ~ .toggleThumb {
+  transform: translateX(16px);
+}
+
+/* Slider */
+
+.sliderWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sliderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sliderValue {
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--pdf-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.08);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--pdf-gradient);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--pdf-glow-p);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--pdf-gradient);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--pdf-glow-p);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Sections List */
+
+.sectionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sectionItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--pdf-s2);
+  border-radius: 9px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--pdf-border);
+  transition: all 150ms ease;
+  cursor: pointer;
+}
+
+.sectionItem:hover {
+  border-color: var(--pdf-border-hi);
+  background: rgba(255,255,255,0.05);
+}
+
+.sectionItem.sectionEnabled {
+  border-color: rgba(124,58,237,0.25);
+  background: rgba(124,58,237,0.06);
+}
+
+.sectionCheckbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--pdf-border-hi);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 150ms ease;
+}
+
+.sectionItem.sectionEnabled .sectionCheckbox {
+  background: var(--pdf-gradient);
+  border-color: transparent;
+}
+
+.sectionCheckbox svg {
+  width: 10px;
+  height: 10px;
+  color: #fff;
+}
+
+.sectionName {
+  flex: 1;
+  font-size: 13px;
+  color: var(--pdf-text-2);
+}
+
+.sectionItem.sectionEnabled .sectionName {
+  color: var(--pdf-text-1);
+}
+
+.sectionPages {
+  font-size: 11px;
+  color: var(--pdf-text-3);
+}
+
+/* Analysis Grid */
+
+.analysisGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.analysisCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: var(--pdf-s2);
+  border-radius: 12px;
+  border: 1.5px solid var(--pdf-border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 150ms ease;
+  text-align: left;
+}
+
+.analysisCard:hover {
+  border-color: var(--pdf-border-hi);
+  box-shadow: 0 4px 20px var(--pdf-glow-p);
+}
+
+.analysisCard.selectedAnalysis {
+  border-color: var(--pdf-purple);
+  background: rgba(124,58,237,0.1);
+  box-shadow: 0 0 20px var(--pdf-glow-p);
+}
+
+.analysisCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.analysisCardLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analysisIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.analysisCard.selectedAnalysis .analysisIcon {
+  background: var(--pdf-gradient);
+}
+
+.analysisIcon svg {
+  width: 14px;
+  height: 14px;
+  color: var(--pdf-text-2);
+}
+
+.analysisCard.selectedAnalysis .analysisIcon svg {
+  color: #fff;
+}
+
+.analysisName {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pdf-text-2);
+}
+
+.analysisCard.selectedAnalysis .analysisName {
+  color: var(--pdf-text-1);
+}
+
+.confidenceBadge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: rgba(34,197,94,0.12);
+  color: var(--pdf-success);
+  border: 1px solid rgba(34,197,94,0.2);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.analysisDesc {
+  font-size: 11px;
+  color: var(--pdf-text-3);
+  line-height: 1.5;
+}
+
+/* AI chips */
+
+.aiChipsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.aiChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(124,58,237,0.1);
+  border: 1px solid rgba(124,58,237,0.2);
+  font-size: 11px;
+  font-weight: 500;
+  color: #C084FC;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.aiChip:hover {
+  background: rgba(124,58,237,0.2);
+  border-color: rgba(124,58,237,0.4);
+}
+
+.aiChipDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--pdf-gradient);
+  flex-shrink: 0;
+}
+
+/* Data Integrations */
+
+.integrationGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.integrationCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--pdf-s2);
+  border-radius: 10px;
+  border: 1.5px solid var(--pdf-border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.integrationCard:hover {
+  border-color: var(--pdf-border-hi);
+  background: rgba(255,255,255,0.03);
+}
+
+.integrationCard.selectedIntegration {
+  border-color: var(--pdf-purple);
+  background: rgba(124,58,237,0.08);
+}
+
+.integrationIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.integrationIcon svg {
+  width: 12px;
+  height: 12px;
+  color: var(--pdf-text-2);
+}
+
+.integrationCard.selectedIntegration .integrationIcon {
+  background: var(--pdf-gradient);
+}
+
+.integrationCard.selectedIntegration .integrationIcon svg {
+  color: #fff;
+}
+
+.integrationName {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--pdf-text-2);
+}
+
+.integrationCard.selectedIntegration .integrationName {
+  color: var(--pdf-text-1);
+}
+
+/* Footer / Actions */
+
+.workspaceFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pdf-s2) var(--pdf-s3);
+  border-top: 1px solid var(--pdf-border);
+  flex-shrink: 0;
+  gap: var(--pdf-s2);
+  background: var(--pdf-panel);
+}
+
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--pdf-s1);
+}
+
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--pdf-s1);
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: 9px;
+  background: var(--pdf-gradient);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+  box-shadow: 0 2px 12px var(--pdf-glow-p);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+  box-shadow: 0 0 20px var(--pdf-glow-p);
+  transform: translateY(-1px);
+}
+
+.btnPrimary:active {
+  transform: translateY(0);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btnPrimary svg {
+  width: 15px;
+  height: 15px;
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--pdf-text-2);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--pdf-border-hi);
+  cursor: pointer;
+  transition: all 150ms ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btnSecondary:hover {
+  border-color: var(--pdf-purple);
+  color: var(--pdf-text-1);
+  background: rgba(124,58,237,0.08);
+}
+
+.btnSecondary:active {
+  opacity: 0.8;
+}
+
+.btnSecondary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btnSecondary svg {
+  width: 14px;
+  height: 14px;
+}
+
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--pdf-text-3);
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 150ms ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btnGhost:hover {
+  color: var(--pdf-text-2);
+  background: rgba(255,255,255,0.05);
+}
+
+.btnGhost svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Preview Panel */
+
+.previewPanel {
+  background: var(--pdf-panel);
+  border-left: 1px solid var(--pdf-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pdf-s2) var(--pdf-s3);
+  border-bottom: 1px solid var(--pdf-border);
+  flex-shrink: 0;
+  gap: var(--pdf-s2);
+}
+
+.previewTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pdf-text-1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.previewTitle svg {
+  width: 14px;
+  height: 14px;
+  color: var(--pdf-purple);
+}
+
+.previewActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.previewBody {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.previewIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* Preview empty state */
+
+.previewEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pdf-s2);
+  padding: var(--pdf-s5) var(--pdf-s3);
+  height: 100%;
+  text-align: center;
+  animation: fadeIn 300ms ease both;
+}
+
+.previewEmptyIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(236,72,153,0.1) 100%);
+  border: 1px solid rgba(124,58,237,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--pdf-s1);
+}
+
+.previewEmptyIcon svg {
+  width: 26px;
+  height: 26px;
+  color: #C084FC;
+}
+
+.previewEmptyTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pdf-text-1);
+}
+
+.previewEmptySub {
+  font-size: 12px;
+  color: var(--pdf-text-3);
+  max-width: 220px;
+  line-height: 1.6;
+}
+
+/* Preview KPI tiles */
+
+.previewKpiGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--pdf-s1);
+  padding: var(--pdf-s2);
+}
+
+.previewKpiTile {
+  padding: var(--pdf-s2);
+  border-radius: 10px;
+  background: var(--pdf-card);
+  border: 1px solid var(--pdf-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 150ms ease;
+}
+
+.previewKpiTile:hover {
+  border-color: var(--pdf-border-hi);
+  box-shadow: 0 4px 12px var(--pdf-glow-p);
+}
+
+.kpiLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--pdf-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.kpiValue {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pdf-text-1);
+}
+
+.kpiDelta {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pdf-success);
+}
+
+.kpiDelta.negative {
+  color: var(--pdf-danger);
+}
+
+/* Shimmer / Skeleton */
+
+.shimmerOverlay {
+  position: absolute;
+  inset: 0;
+  background: var(--pdf-panel);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pdf-s3);
+  padding: var(--pdf-s3);
+  animation: fadeIn 200ms ease both;
+}
+
+.shimmerStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pdf-s1);
+  width: 100%;
+  max-width: 320px;
+}
+
+.shimmerBar {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.shimmerTitle {
+  height: 18px;
+  width: 60%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+  margin-bottom: 4px;
+}
+
+.shimmerLine {
+  height: 10px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.shimmerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.shimmerTile {
+  height: 70px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.analyzingText {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #C084FC;
+  animation: analyzePulse 1.5s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analyzeSpinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(124,58,237,0.25);
+  border-top-color: var(--pdf-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Preview mobile tab toggle */
+
+.previewTabToggle {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 8px var(--pdf-s2);
+  border-radius: 8px;
+  background: rgba(124,58,237,0.12);
+  border: 1px solid rgba(124,58,237,0.25);
+  color: #C084FC;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 150ms ease;
+}
+
+.previewTabToggle:hover {
+  background: rgba(124,58,237,0.2);
+}
+
+.previewTabToggle svg {
+  width: 13px;
+  height: 13px;
+}
+
+.previewMobileOpen {
+  z-index: 50;
+}
+
+/* Status messages */
+
+.statusMsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px var(--pdf-s2);
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.statusMsg.success {
+  background: rgba(34,197,94,0.1);
+  border-color: rgba(34,197,94,0.2);
+  color: var(--pdf-success);
+}
+
+.statusMsg.error {
+  background: rgba(239,68,68,0.1);
+  border-color: rgba(239,68,68,0.2);
+  color: var(--pdf-danger);
+}
+
+.statusMsg.warn {
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.2);
+  color: var(--pdf-warn);
+}
+
+.statusMsg svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* Divider */
+
+.divider {
+  height: 1px;
+  background: var(--pdf-border);
+  margin: 4px 0;
+}
+
+/* Tags */
+
+.tagNew {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--pdf-gradient);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tagAI {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(124,58,237,0.15);
+  border: 1px solid rgba(124,58,237,0.25);
+  font-size: 10px;
+  font-weight: 700;
+  color: #C084FC;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Utility */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mt1 { margin-top: var(--pdf-s1); }
+.mt2 { margin-top: var(--pdf-s2); }
+.flexCenter { display: flex; align-items: center; justify-content: center; }
+.gap1 { gap: var(--pdf-s1); }
+.gap2 { gap: var(--pdf-s2); }
+
+/* Mobile */
+
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--pdf-border);
+    max-height: 200px;
+    overflow-y: auto;
+    padding: var(--pdf-s2);
+  }
+
+  .previewPanel {
+    border-left: none;
+    border-top: 1px solid var(--pdf-border);
+    max-height: 320px;
+  }
+
+  .previewTabToggle {
+    display: inline-flex;
+  }
+
+  .previewPanel:not(.previewMobileOpen) .previewBody {
+    display: none;
+  }
+
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+
+  .analysisGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .integrationGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .templateGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .workspaceContent {
+    padding: var(--pdf-s2);
+  }
+
+  .workspaceHeader {
+    padding: var(--pdf-s2);
+    flex-wrap: wrap;
+  }
+
+  .previewKpiGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footerLeft,
+  .footerRight {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: var(--pdf-s2);
+  }
+
+  .templateGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Standalone-specific layout classes                                         */
+/* (Not present in francois-landing version â€” kept for standalone TSX layout) */
+/* Variable mapping: --color-* â†’ --pdf-*                                     */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* â”€â”€ Live Background Layer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .bgLayer {
   position: absolute;
@@ -70,106 +1642,11 @@
   pointer-events: none;
 }
 
-/* ── 3-Column Shell ─────────────────────────────────────────────────────────── */
-
-.shell {
-  display: grid;
-  grid-template-columns: 200px 1fr 340px;
-  grid-template-areas: "sidebar workspace preview";
-  flex: 1;
-  min-height: 640px;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
-
-@media (max-width: 1199px) {
-  .shell {
-    grid-template-columns: 200px 1fr;
-    grid-template-areas: "sidebar workspace";
-  }
-}
-
-@media (max-width: 899px) {
-  .shell {
-    grid-template-columns: 1fr;
-    grid-template-areas: "workspace";
-  }
-}
-
-/* ── Sidebar ────────────────────────────────────────────────────────────────── */
-
-.sidebar {
-  grid-area: sidebar;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 28px 12px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(10, 4, 8, 0.30);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.08) transparent;
-  position: sticky;
-  top: 0;
-  align-self: start;
-  max-height: 100vh;
-  margin: 16px 0 16px 16px;
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.05);
-}
-
-.sidebar::-webkit-scrollbar { width: 4px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-
-.sidebarSection {
-  padding: 16px 12px;
-  margin-bottom: 0;
-}
-
-.sidebarLabel {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  padding: 0 10px;
-  margin-bottom: 12px;
-}
-
-/* ── Step Progress ──────────────────────────────────────────────────────────── */
-
-.stepList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 0;
-  margin-bottom: 0;
-}
-
-.stepItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-}
-
-.stepItem:hover {
-  background: rgba(255,255,255,0.06);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
-}
+/* â”€â”€ Step Items (old class names â€” standalone TSX still uses these) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .stepItemActive {
-  background: rgba(233,69,96,0.10);
-  box-shadow: 0 0 0 1px rgba(233,69,96,0.20) inset, 0 0 14px rgba(233,69,96,0.15);
+  background: rgba(124,58,237,0.10);
+  box-shadow: 0 0 0 1px rgba(124,58,237,0.20) inset, 0 0 14px rgba(124,58,237,0.15);
 }
 
 .stepItemActive::before {
@@ -181,8 +1658,8 @@
   width: 3px;
   height: 60%;
   border-radius: 2px;
-  background: linear-gradient(to bottom, #e94560, #ff5b75);
-  box-shadow: 0 0 8px rgba(233,69,96,0.6);
+  background: var(--pdf-gradient);
+  box-shadow: 0 0 8px var(--pdf-glow-p);
   transition: height 0.25s ease, opacity 0.25s ease;
 }
 
@@ -207,16 +1684,16 @@
 }
 
 .stepDotActive {
-  border-color: #e94560;
-  background: linear-gradient(135deg, #e94560, #ff5b75);
+  border-color: var(--pdf-purple);
+  background: var(--pdf-gradient);
   color: #fff;
-  box-shadow: 0 0 12px rgba(233,69,96,0.5);
+  box-shadow: 0 0 12px var(--pdf-glow-p);
 }
 
 .stepDotDone {
-  border-color: #22c55e;
+  border-color: var(--pdf-success);
   background: rgba(34,197,94,0.2);
-  color: #22c55e;
+  color: var(--pdf-success);
   box-shadow: 0 0 8px rgba(34,197,94,0.25);
 }
 
@@ -233,7 +1710,7 @@
   font-weight: 600;
 }
 
-/* ── Sidebar progress bar (item 8) ──────────────────────────────────────────── */
+/* â”€â”€ Sidebar progress bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .sidebarProgressWrap {
   display: flex;
@@ -251,31 +1728,15 @@
   overflow: hidden;
 }
 
-.sidebarProgressFill {
-  height: 100%;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #e94560, #ff5b75);
-  transition: width 0.45s ease;
-}
-
-.sidebarProgressPct {
-  font-size: 9px;
-  font-weight: 700;
-  color: rgba(233,69,96,0.75);
-  font-family: "JetBrains Mono", monospace;
-  min-width: 28px;
-  text-align: right;
-}
-
 .stepPercentage {
   font-size: 9px;
-  color: rgba(233,69,96,0.7);
+  color: var(--pdf-purple);
   font-weight: 600;
   margin-left: auto;
   font-family: "JetBrains Mono", monospace;
 }
 
-/* ── Template Selector ──────────────────────────────────────────────────────── */
+/* â”€â”€ Template Selector â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .templatePills {
   display: flex;
@@ -304,8 +1765,8 @@
 }
 
 .templatePillActive {
-  background: rgba(233,69,96,0.08);
-  box-shadow: 0 0 0 1px rgba(233,69,96,0.18), 0 0 12px rgba(233,69,96,0.10);
+  background: rgba(124,58,237,0.08);
+  box-shadow: 0 0 0 1px rgba(124,58,237,0.18), 0 0 12px rgba(124,58,237,0.10);
 }
 
 .templatePillIcon {
@@ -333,13 +1794,13 @@
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 999px;
-  background: rgba(233,69,96,0.2);
-  color: var(--color-accent-red);
+  background: rgba(124,58,237,0.2);
+  color: var(--pdf-purple);
   letter-spacing: 0.05em;
   flex-shrink: 0;
 }
 
-/* ── Workspace ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ Workspace â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .workspace {
   grid-area: workspace;
@@ -377,7 +1838,7 @@
   }
 }
 
-/* ── Progress Indicator ─────────────────────────────────────────────────────── */
+/* â”€â”€ Progress Indicator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .progressIndicator {
   display: flex;
@@ -396,21 +1857,21 @@
 .progressBarFill {
   height: 100%;
   border-radius: 2px;
-  background: linear-gradient(90deg, #e94560, #ff5b75);
+  background: var(--pdf-gradient);
   transition: width 0.4s ease;
 }
 
 .progressPercentLabel {
   font-size: 10px;
   font-weight: 700;
-  color: rgba(233,69,96,0.8);
+  color: var(--pdf-purple);
   font-family: "JetBrains Mono", monospace;
   white-space: nowrap;
   min-width: 32px;
   text-align: right;
 }
 
-/* ── Step Header ────────────────────────────────────────────────────────────── */
+/* â”€â”€ Step Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .stepHeader {
   display: flex;
@@ -431,14 +1892,14 @@
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 6px;
-  background: rgba(233,69,96,0.15);
-  color: var(--color-accent-red);
+  background: rgba(124,58,237,0.15);
+  color: var(--pdf-purple);
 }
 
 .stepTitle {
   font-size: 30px;
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   margin: 0;
   font-family: "Syne", system-ui, sans-serif;
   letter-spacing: -0.02em;
@@ -453,13 +1914,13 @@
   font-weight: 400;
 }
 
-/* ── Form Card ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ Form Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .formCard {
-  background: rgba(20, 8, 14, 0.58);
+  background: var(--pdf-card);
   backdrop-filter: blur(24px) saturate(140%);
   -webkit-backdrop-filter: blur(24px) saturate(140%);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--pdf-border);
   border-radius: 16px;
   padding: 24px 28px;
   display: flex;
@@ -470,7 +1931,7 @@
 }
 
 .formCard:hover {
-  border-color: rgba(255,255,255,0.13);
+  border-color: var(--pdf-border-hi);
   box-shadow: 0 12px 52px rgba(0,0,0,0.44), 0 1px 0 rgba(255,255,255,0.07) inset;
 }
 
@@ -499,7 +1960,7 @@
   }
 }
 
-/* ── Field ──────────────────────────────────────────────────────────────────── */
+/* â”€â”€ Field â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .field {
   display: flex;
@@ -516,7 +1977,7 @@
 
 .fieldLabelRequired::after {
   content: " *";
-  color: var(--color-accent-red);
+  color: var(--pdf-purple);
 }
 
 .input {
@@ -525,7 +1986,7 @@
   border-radius: 12px;
   padding: 11px 14px;
   font-size: 13px;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   font-family: inherit;
   transition: all 0.2s ease;
   outline: none;
@@ -542,9 +2003,9 @@
 }
 
 .input:focus {
-  border-color: rgba(233,69,96,0.65);
-  background: rgba(233,69,96,0.04);
-  box-shadow: 0 0 0 3px rgba(233,69,96,0.18);
+  border-color: rgba(124,58,237,0.65);
+  background: rgba(124,58,237,0.04);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.18);
 }
 
 .textarea {
@@ -569,10 +2030,10 @@
 
 .select option {
   background: #1a0a10;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
 }
 
-/* ── File Upload ────────────────────────────────────────────────────────────── */
+/* â”€â”€ File Upload â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .uploadZone {
   border: 1.5px dashed rgba(255,255,255,0.14);
@@ -589,38 +2050,38 @@
 }
 
 .uploadZone:hover {
-  border-color: rgba(233,69,96,0.6);
+  border-color: rgba(124,58,237,0.6);
   border-style: solid;
-  background: rgba(233,69,96,0.04);
+  background: rgba(124,58,237,0.04);
   transform: scale(1.01);
 }
 
 .uploadZoneDrag {
-  border-color: var(--color-accent-red);
+  border-color: var(--pdf-purple);
   border-style: solid;
-  background: rgba(233,69,96,0.08);
-  box-shadow: 0 0 20px rgba(233,69,96,0.15);
+  background: rgba(124,58,237,0.08);
+  box-shadow: 0 0 20px var(--pdf-glow-p);
   transform: scale(1.01);
+}
+
+@keyframes ringPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--pdf-glow-p); }
+  50%       { box-shadow: 0 0 0 8px rgba(124,58,237,0); }
 }
 
 .uploadZoneDrag .uploadIcon {
   animation: ringPulse 0.8s ease-in-out infinite;
 }
 
-@keyframes ringPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(233,69,96,0.3); }
-  50%       { box-shadow: 0 0 0 8px rgba(233,69,96,0); }
-}
-
 .uploadIcon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: rgba(233,69,96,0.12);
+  background: rgba(124,58,237,0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-accent-red);
+  color: var(--pdf-purple);
   transition: transform 0.18s ease-out;
 }
 
@@ -634,7 +2095,7 @@
 }
 
 .uploadTextStrong {
-  color: var(--color-accent-red);
+  color: var(--pdf-purple);
   font-weight: 600;
 }
 
@@ -643,7 +2104,7 @@
   color: rgba(255,255,255,0.3);
 }
 
-/* ── Logo Preview ───────────────────────────────────────────────────────────── */
+/* â”€â”€ Logo Preview â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .logoPreviewWrap {
   display: flex;
@@ -651,8 +2112,8 @@
   gap: 16px;
   padding: 16px;
   border-radius: 14px;
-  background: rgba(233,69,96,0.06);
-  border: 1px solid rgba(233,69,96,0.18);
+  background: rgba(124,58,237,0.06);
+  border: 1px solid rgba(124,58,237,0.18);
 }
 
 .logoPreviewImg {
@@ -682,7 +2143,7 @@
 .logoPreviewName {
   font-size: 13px;
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -714,7 +2175,7 @@
 
 .logoReplaceBtn:hover {
   background: rgba(255,255,255,0.1);
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   transform: translateY(-1px);
 }
 
@@ -723,7 +2184,7 @@
   border-radius: 8px;
   background: rgba(239,68,68,0.1);
   border: 1px solid rgba(239,68,68,0.28);
-  color: #ef4444;
+  color: var(--pdf-danger);
   cursor: pointer;
   font-size: 11px;
   font-weight: 600;
@@ -742,21 +2203,21 @@
   gap: 10px;
   padding: 12px 16px;
   border-radius: 12px;
-  background: rgba(233,69,96,0.08);
-  border: 1px solid rgba(233,69,96,0.2);
+  background: rgba(124,58,237,0.08);
+  border: 1px solid rgba(124,58,237,0.2);
 }
 
 .filePreviewName {
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* ── Toggle ─────────────────────────────────────────────────────────────────── */
+/* â”€â”€ Toggle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .toggleRow {
   display: flex;
@@ -780,7 +2241,7 @@
 .toggleName {
   font-size: 13px;
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
 }
 
 .toggleDesc {
@@ -824,19 +2285,19 @@
 }
 
 .toggleInput:checked + .toggleSlider {
-  background: rgba(233,69,96,0.35);
+  background: rgba(124,58,237,0.35);
 }
 
 .toggleInput:checked + .toggleSlider::before {
   transform: translateX(16px);
-  background: var(--color-accent-red);
+  background: var(--pdf-purple);
 }
 
 .toggleInput:focus-visible + .toggleSlider {
-  box-shadow: 0 0 0 3px rgba(233,69,96,0.3);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.3);
 }
 
-/* ── URL Input Row ──────────────────────────────────────────────────────────── */
+/* â”€â”€ URL Input Row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .urlRow {
   display: flex;
@@ -866,9 +2327,9 @@
 }
 
 .urlAddBtn:hover {
-  background: rgba(233,69,96,0.1);
-  border-color: rgba(233,69,96,0.4);
-  color: var(--color-accent-red);
+  background: rgba(124,58,237,0.1);
+  border-color: rgba(124,58,237,0.4);
+  color: var(--pdf-purple);
   transform: translateY(-1px);
 }
 
@@ -923,10 +2384,10 @@
 
 .urlChipRemove:hover {
   background: rgba(239,68,68,0.18);
-  color: #ef4444;
+  color: var(--pdf-danger);
 }
 
-/* ── Integration Cards ──────────────────────────────────────────────────────── */
+/* â”€â”€ Integration Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .integrationGrid {
   display: grid;
@@ -937,7 +2398,7 @@
 .integrationCard {
   padding: 16px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--pdf-border);
   background: rgba(255,255,255,0.02);
   cursor: pointer;
   transition: all 0.18s ease-out;
@@ -948,19 +2409,19 @@
 }
 
 .integrationCard:hover {
-  border-color: rgba(255,255,255,0.15);
+  border-color: var(--pdf-border-hi);
   background: rgba(255,255,255,0.04);
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.25);
 }
 
 .integrationCardActive {
-  border-color: rgba(233,69,96,0.45);
-  background: rgba(233,69,96,0.07);
+  border-color: rgba(124,58,237,0.45);
+  background: rgba(124,58,237,0.07);
 }
 
 .integrationCardActive:hover {
-  background: rgba(233,69,96,0.11);
+  background: rgba(124,58,237,0.11);
 }
 
 .integrationIcon {
@@ -970,7 +2431,7 @@
 .integrationName {
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
 }
 
 .integrationStatus {
@@ -989,11 +2450,11 @@
 }
 
 .integrationStatusDotActive {
-  background: #22c55e;
+  background: var(--pdf-success);
   box-shadow: 0 0 5px rgba(34,197,94,0.5);
 }
 
-/* ── Analysis Type ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Analysis Type â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .analysisGrid {
   display: grid;
@@ -1010,23 +2471,23 @@
 .analysisCard {
   padding: 18px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--pdf-border);
   background: rgba(255,255,255,0.02);
   cursor: pointer;
   transition: all 0.18s ease-out;
 }
 
 .analysisCard:hover {
-  border-color: rgba(255,255,255,0.14);
+  border-color: var(--pdf-border-hi);
   transform: translateY(-2px);
   box-shadow: 0 6px 24px rgba(0,0,0,0.3);
   background: rgba(255,255,255,0.04);
 }
 
 .analysisCardActive {
-  border-color: rgba(233,69,96,0.45);
-  background: rgba(233,69,96,0.07);
-  box-shadow: 0 0 20px rgba(233,69,96,0.1);
+  border-color: rgba(124,58,237,0.45);
+  background: rgba(124,58,237,0.07);
+  box-shadow: 0 0 20px var(--pdf-glow-p);
 }
 
 .analysisCardHeader {
@@ -1036,14 +2497,23 @@
   margin-bottom: 8px;
 }
 
+.analysisCardLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
 .analysisCardIcon {
   font-size: 16px;
+  flex-shrink: 0;
 }
 
 .analysisCardName {
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
 }
 
 .analysisCardDesc {
@@ -1052,7 +2522,7 @@
   line-height: 1.5;
 }
 
-/* ── Slider ─────────────────────────────────────────────────────────────────── */
+/* â”€â”€ Slider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .sliderRow {
   display: flex;
@@ -1075,7 +2545,7 @@
 .sliderValue {
   font-size: 12px;
   font-weight: 700;
-  color: var(--color-accent-red);
+  color: var(--pdf-purple);
   font-family: "JetBrains Mono", monospace;
 }
 
@@ -1095,27 +2565,27 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--color-accent-red);
+  background: var(--pdf-purple);
   cursor: pointer;
-  box-shadow: 0 0 8px rgba(233,69,96,0.5);
+  box-shadow: 0 0 8px var(--pdf-glow-p);
   transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
 }
 
 .sliderInput::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  box-shadow: 0 0 14px rgba(233,69,96,0.65);
+  box-shadow: 0 0 14px rgba(124,58,237,0.65);
 }
 
 .sliderInput::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--color-accent-red);
+  background: var(--pdf-purple);
   cursor: pointer;
   border: none;
 }
 
-/* ── Section Selector ───────────────────────────────────────────────────────── */
+/* â”€â”€ Section Selector â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .sectionGrid {
   display: grid;
@@ -1132,7 +2602,7 @@
 .sectionChip {
   padding: 10px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--pdf-border);
   background: transparent;
   cursor: pointer;
   transition: all 0.18s ease-out;
@@ -1147,23 +2617,23 @@
 }
 
 .sectionChip:hover {
-  border-color: rgba(255,255,255,0.14);
+  border-color: var(--pdf-border-hi);
   color: rgba(255,255,255,0.6);
   background: rgba(255,255,255,0.03);
   transform: translateY(-1px);
 }
 
 .sectionChipActive {
-  border-color: rgba(233,69,96,0.45);
-  background: rgba(233,69,96,0.09);
-  color: var(--color-accent-red);
+  border-color: rgba(124,58,237,0.45);
+  background: rgba(124,58,237,0.09);
+  color: var(--pdf-purple);
 }
 
 .sectionCheck {
   font-size: 10px;
 }
 
-/* ── Nav Buttons ────────────────────────────────────────────────────────────── */
+/* â”€â”€ Nav Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .navBar {
   display: flex;
@@ -1192,7 +2662,7 @@
 
 .btnBack:hover {
   background: rgba(255,255,255,0.05);
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   transform: translateY(-1px);
 }
 
@@ -1203,21 +2673,21 @@
   padding: 14px 28px;
   border-radius: 14px;
   border: none;
-  background: linear-gradient(135deg, #e94560, #ff5b75);
+  background: var(--pdf-gradient);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
-  box-shadow: 0 4px 20px rgba(233,69,96,0.38);
+  box-shadow: 0 4px 20px var(--pdf-glow-p);
   letter-spacing: 0.01em;
 }
 
 .btnNext:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 32px rgba(233,69,96,0.58);
-  background: linear-gradient(135deg, #f05070, #e94560);
+  box-shadow: 0 6px 32px rgba(124,58,237,0.58);
+  filter: brightness(1.1);
 }
 
 .btnNext:disabled {
@@ -1227,7 +2697,7 @@
   transform: none;
 }
 
-/* ── Utility classes (items 3, 4, 5) ────────────────────────────────────────── */
+/* â”€â”€ Utility / nav meta â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .analyzeRow {
   display: flex;
@@ -1238,24 +2708,22 @@
 
 .analyzeModuleCount {
   font-size: 11px;
-  color: var(--color-text-muted);
+  color: var(--pdf-text-3);
 }
 
 .navBarMeta {
   font-size: 11px;
-  color: var(--color-text-muted);
+  color: var(--pdf-text-3);
 }
 
-/* ── Preview more-sections teaser ───────────────────────────────────────────── */
+/* â”€â”€ Preview Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .previewMoreSections {
   text-align: center;
   padding: 16px 10px;
   font-size: 10px;
-  color: var(--color-text-muted);
+  color: var(--pdf-text-3);
 }
-
-/* ── Preview Panel ──────────────────────────────────────────────────────────── */
 
 .preview {
   grid-area: preview;
@@ -1292,14 +2760,9 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--color-accent-red);
-  box-shadow: 0 0 8px rgba(233,69,96,0.7);
+  background: var(--pdf-purple);
+  box-shadow: 0 0 8px var(--pdf-glow-p);
   animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.35; }
 }
 
 .previewZoom {
@@ -1332,7 +2795,7 @@
 .previewScroll::-webkit-scrollbar { width: 3px; }
 .previewScroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 3px; }
 
-/* ── PDF Page Mock ──────────────────────────────────────────────────────────── */
+/* â”€â”€ PDF Page Mock â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .pdfPage {
   background: #fff;
@@ -1354,14 +2817,14 @@
 }
 
 .pdfCoverPage {
-  background: linear-gradient(145deg, #0f0f0f 0%, #1a0a0e 50%, #0a0a0a 100%);
+  background: linear-gradient(145deg, #0f0f0f 0%, #1a0a0e 50%, var(--pdf-bg) 100%);
   padding: 0;
 }
 
 .pdfCoverBand {
   height: 6px;
-  background: var(--color-accent-red);
-  box-shadow: 0 0 20px rgba(233,69,96,0.6);
+  background: var(--pdf-gradient);
+  box-shadow: 0 0 20px var(--pdf-glow-p);
 }
 
 .pdfCoverContent {
@@ -1377,7 +2840,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent-red);
+  color: var(--pdf-purple);
   font-family: "JetBrains Mono", monospace;
 }
 
@@ -1434,7 +2897,7 @@
 
 .pdfSectionHeader {
   height: 3px;
-  background: var(--color-accent-red);
+  background: var(--pdf-gradient);
 }
 
 .pdfSectionBody {
@@ -1481,7 +2944,7 @@
 .pdfBarFill {
   height: 100%;
   border-radius: 2px;
-  background: var(--color-accent-red);
+  background: var(--pdf-gradient);
 }
 
 .pdfMetricGrid {
@@ -1522,7 +2985,7 @@
   background: #e0e0e0;
 }
 
-/* ── Preview Footer — Export Buttons ─────────────────────────────────────────── */
+/* â”€â”€ Preview Footer â€” Export Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .previewFooter {
   padding: 14px 18px;
@@ -1550,7 +3013,7 @@
   flex: 1;
   padding: 8px 4px;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--pdf-border);
   background: rgba(255,255,255,0.02);
   color: rgba(255,255,255,0.5);
   font-size: 10px;
@@ -1566,27 +3029,27 @@
 
 .exportBtn:hover {
   background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.14);
-  color: var(--color-text-primary);
+  border-color: var(--pdf-border-hi);
+  color: var(--pdf-text-1);
   transform: translateY(-1px);
 }
 
 .exportBtnPrimary {
-  background: linear-gradient(135deg, var(--color-accent-red), #d63b55);
+  background: var(--pdf-gradient);
   border-color: transparent;
   color: #fff;
-  box-shadow: 0 0 14px rgba(233,69,96,0.25);
+  box-shadow: 0 0 14px var(--pdf-glow-p);
 }
 
 .exportBtnPrimary:hover {
-  background: linear-gradient(135deg, #f05070, var(--color-accent-red));
-  box-shadow: 0 0 22px rgba(233,69,96,0.45);
+  filter: brightness(1.1);
+  box-shadow: 0 0 22px rgba(124,58,237,0.45);
   border-color: transparent;
   color: #fff;
   transform: translateY(-1px);
 }
 
-/* ── KPI Cards ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ KPI Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .kpiGrid {
   display: grid;
@@ -1603,8 +3066,8 @@
 .kpiCard {
   padding: 16px 18px;
   border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.07);
-  background: rgba(20, 8, 14, 0.55);
+  border: 1px solid var(--pdf-border);
+  background: var(--pdf-card);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   cursor: default;
@@ -1612,7 +3075,7 @@
 }
 
 .kpiCard:hover {
-  border-color: rgba(255,255,255,0.12);
+  border-color: var(--pdf-border-hi);
   box-shadow: 0 6px 28px rgba(0,0,0,0.35);
   transform: translateY(-2px);
 }
@@ -1625,14 +3088,14 @@
 .kpiCardValue {
   font-size: 22px;
   font-weight: 800;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   font-family: "Syne", system-ui, sans-serif;
   line-height: 1;
   margin-bottom: 5px;
 }
 
 .kpiCardValueColored {
-  color: var(--color-accent-red);
+  color: var(--pdf-purple);
 }
 
 .kpiCardLabel {
@@ -1641,7 +3104,7 @@
   font-weight: 500;
 }
 
-/* ── Skeleton Loader ────────────────────────────────────────────────────────── */
+/* â”€â”€ Skeleton Loader â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .skeleton {
   background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
@@ -1650,12 +3113,7 @@
   border-radius: 6px;
 }
 
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ── Analysis Running Overlay ───────────────────────────────────────────────── */
+/* â”€â”€ Analysis Running Overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .analysisPill {
   display: inline-flex;
@@ -1663,10 +3121,10 @@
   gap: 8px;
   padding: 10px 16px;
   border-radius: 24px;
-  background: rgba(233,69,96,0.1);
-  border: 1px solid rgba(233,69,96,0.3);
+  background: rgba(124,58,237,0.1);
+  border: 1px solid rgba(124,58,237,0.3);
   font-size: 12px;
-  color: var(--color-accent-red);
+  color: var(--pdf-purple);
   font-weight: 600;
 }
 
@@ -1674,16 +3132,12 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  border: 2px solid rgba(233,69,96,0.3);
-  border-top-color: var(--color-accent-red);
+  border: 2px solid rgba(124,58,237,0.3);
+  border-top-color: var(--pdf-purple);
   animation: spin 0.7s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ── Report Structure Step ──────────────────────────────────────────────────── */
+/* â”€â”€ Report Structure Step â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .structureRow {
   display: flex;
@@ -1721,7 +3175,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
 }
 
 .structureMeta {
@@ -1729,7 +3183,7 @@
   color: rgba(255,255,255,0.3);
 }
 
-/* ── Tone selector ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Tone selector â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .tonePills {
   display: flex;
@@ -1757,12 +3211,12 @@
 }
 
 .tonePillActive {
-  border-color: rgba(233,69,96,0.45);
-  background: rgba(233,69,96,0.12);
-  color: var(--color-accent-red);
+  border-color: rgba(124,58,237,0.45);
+  background: rgba(124,58,237,0.12);
+  color: var(--pdf-purple);
 }
 
-/* ── Info Banner ────────────────────────────────────────────────────────────── */
+/* â”€â”€ Info Banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .infoBanner {
   padding: 12px 16px;
@@ -1786,7 +3240,7 @@
   line-height: 1.5;
 }
 
-/* ── Success State ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Success State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .successCard {
   padding: 32px 24px;
@@ -1809,7 +3263,7 @@
 .successTitle {
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   font-family: "Syne", system-ui, sans-serif;
 }
 
@@ -1846,38 +3300,29 @@
 
 .exportFinalBtn:hover {
   background: rgba(255,255,255,0.07);
-  color: var(--color-text-primary);
+  color: var(--pdf-text-1);
   border-color: rgba(255,255,255,0.16);
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
 .exportFinalBtnPrimary {
-  background: linear-gradient(135deg, var(--color-accent-red), #c43055);
+  background: var(--pdf-gradient);
   border-color: transparent;
   color: #fff;
-  box-shadow: 0 4px 20px rgba(233,69,96,0.35);
+  box-shadow: 0 4px 20px var(--pdf-glow-p);
 }
 
 .exportFinalBtnPrimary:hover {
-  box-shadow: 0 8px 32px rgba(233,69,96,0.5);
+  box-shadow: 0 8px 32px rgba(124,58,237,0.5);
   border-color: transparent;
   color: #fff;
+  filter: brightness(1.1);
   transform: translateY(-2px);
 }
 
-/* ── Sidebar Mobile Toggle ──────────────────────────────────────────────────── */
+/* â”€â”€ Logo animation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-@media (max-width: 899px) {
-  .sidebar {
-    display: none;
-  }
-  .preview {
-    display: none;
-  }
-}
-
-/* ── Logo hover animation ──────────────────────────────────────────────────── */
 @keyframes logoFloat {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-14px); }
@@ -1899,12 +3344,23 @@
   object-fit: contain;
   background: transparent;
   animation: logoFloat 3.2s ease-in-out infinite;
-  filter: drop-shadow(0 0 24px rgba(233, 69, 96, 0.45)) drop-shadow(0 8px 32px rgba(0,0,0,0.6));
+  filter: drop-shadow(0 0 24px var(--pdf-glow-p)) drop-shadow(0 8px 32px rgba(0,0,0,0.6));
   transition: filter 0.3s ease, transform 0.3s ease;
   cursor: pointer;
 }
 
 .logoImg:hover {
   transform: scale(1.1);
-  filter: drop-shadow(0 0 32px rgba(233, 69, 96, 0.8)) drop-shadow(0 12px 48px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 0 32px rgba(124,58,237,0.8)) drop-shadow(0 12px 48px rgba(0,0,0,0.8));
+}
+
+/* â”€â”€ Mobile: hide sidebar + preview â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+@media (max-width: 899px) {
+  .sidebar {
+    display: none;
+  }
+  .preview {
+    display: none;
+  }
 }
