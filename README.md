@@ -104,7 +104,7 @@ Browser receives application/pdf download
 
 ### 1. Python Engine (`python/reportlab_engine/`)
 
-Generates 16-section enterprise PDF reports from a JSON config object. Sections include: cover page, executive summary, company bio, KPI scorecard, revenue projections, competitive analysis, tech stack audit, risk matrix, roadmap, audience data, and AI-generated narrative sections.
+Generates 16-section enterprise PDF reports from a JSON config object. Sections include: cover page, executive summary, company bio, KPI scorecard, revenue projections, competitive analysis, tech stack audit, risk matrix, roadmap, audience data, and auto-generated narrative sections.
 
 **Input:** JSON config object (passed via stdin with `--stdin` flag, or loaded from a file with `--config`). See `examples/sample-config.json` for the full schema.
 
@@ -150,14 +150,14 @@ A self-contained 4-step wizard that drives the full report workflow.
 **Steps:**
 1. Company / Project — name, industry, description, logo upload
 2. Data Sources — web URLs, integration toggles, data connectors
-3. AI Analysis Engine — analysis type selection (competitive, growth, risk, market, technical, financial), depth level, confidence threshold, tone
+3. Automated Analysis Engine — analysis type selection (competitive, growth, risk, market, technical, financial), depth level, confidence threshold, tone
 4. Structure + Export — section toggles, PDF/DOCX/PPT export buttons, live preview panel
 
 **Props:**
 
 | Prop | Type | Description |
 |------|------|-------------|
-| `onAnalyze` | `(config: ReportConfig) => void` | Called when user triggers AI analysis in Step 3 |
+| `onAnalyze` | `(config: ReportConfig) => void` | Called when user triggers automated analysis in Step 3 |
 | `onPreview` | `(config: ReportConfig) => Promise<string \| null>` | Called to fetch a PNG preview; return value is injected as `previewUrl` |
 | `onExport` | `(config: ReportConfig, format: "pdf" \| "docx" \| "ppt") => void` | Called when user clicks an export button |
 | `previewUrl` | `string \| null` | External preview image URL, controlled by parent |
