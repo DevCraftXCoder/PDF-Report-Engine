@@ -139,7 +139,7 @@ Three Next.js App Router route handlers, all running on the Node.js runtime (not
 
 All routes require:
 - `X-Requested-With: XMLHttpRequest` header (CSRF guard)
-- `admin_auth` or `mizzy_auth` session cookie (auth placeholder — replace with your own)
+- Session cookie (auth placeholder — replace with your own auth implementation)
 
 Rate limit on `/generate`: 5 requests per hour per IP.
 
